@@ -1,7 +1,6 @@
 locals {
   role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   ]
 }
@@ -19,41 +18,40 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 resource "aws_iam_role_policy" "this" {
-  name   = "EC2-Inline-Policy"
-  role   = aws_iam_role.this.id
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
+  name = "EC2-Inline-Policy"
+  role = aws_iam_role.this.id
+  policy = jsonencode(
     {
-      "Effect": "Allow",
-      "Action": [
-          "ssm:GetParameter"
-      ],
-      "Resource": "*"
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "ssm:GetParameter"
+          ],
+          "Resource" : "*"
+        }
+      ]
     }
-  ]
-}
-EOF
+  )
 }
 
 resource "aws_iam_role" "this" {
   name = "EC2-Role"
   path = "/"
 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-               "Service": "ec2.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
+          "Action" : "sts:AssumeRole",
+          "Principal" : {
+            "Service" : "ec2.amazonaws.com"
+          },
+          "Effect" : "Allow"
         }
-    ]
-}
-EOF
+      ]
+    }
+  )
 }

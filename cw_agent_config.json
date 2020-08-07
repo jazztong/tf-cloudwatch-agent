@@ -1,7 +1,6 @@
 {
   "agent": {
-    "metrics_collection_interval": 30,
-    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log"
+    "metrics_collection_interval": 10
   },
   "metrics": {
     "metrics_collected": {
@@ -14,45 +13,6 @@
         "measurement": ["mem_available_percent"]
       }
     },
-    "aggregation_dimensions": [["InstanceId", "InstanceType"]]
-  },
-  "logs": {
-    "logs_collected": {
-      "files": {
-        "collect_list": [
-          {
-            "file_path": "/var/log/user-data.log",
-            "log_group_name": "/ec2/UserDataLog",
-            "log_stream_name": "{instance_id}_{hostname}",
-            "timezone": "Local"
-          },
-          {
-            "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
-            "log_group_name": "/ec2/CloudWatchAgentLog",
-            "log_stream_name": "{instance_id}_{hostname}",
-            "timezone": "Local"
-          },
-          {
-            "file_path": "/var/log/messages",
-            "log_group_name": "/ec2/var/log/messages",
-            "log_stream_name": "{instance_id}_{hostname}",
-            "timezone": "Local"
-          },
-          {
-            "file_path": "/var/log/secure",
-            "log_group_name": "/ec2/var/log/secure",
-            "log_stream_name": "{instance_id}_{hostname}",
-            "timezone": "Local"
-          },
-          {
-            "file_path": "/var/log/yum.log",
-            "log_group_name": "/ec2/var/log/yum",
-            "log_stream_name": "{instance_id}_{hostname}",
-            "timezone": "Local"
-          }
-        ]
-      }
-    },
-    "log_stream_name": "/ec2/catchall"
+    "aggregation_dimensions": [["InstanceId", "InstanceType"], ["InstanceId"]]
   }
 }

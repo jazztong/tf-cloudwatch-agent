@@ -2,9 +2,8 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-
 locals {
-  userdata = templatefile("${path.module}/userdata.sh", {
+  userdata = templatefile("userdata.sh", {
     ssm_cloudwatch_config = aws_ssm_parameter.cw_agent.name
   })
 }
